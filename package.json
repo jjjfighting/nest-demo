@@ -27,13 +27,16 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
     "mysql2": "^2.3.3",
+    "nest-winston": "^1.9.4",
     "nestjs-pino": "^4.0.0",
     "pino-http": "^9.0.0",
     "pino-pretty": "^10.3.1",
     "pino-roll": "1.0.0-rc.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.7"
+    "typeorm": "^0.3.7",
+    "winston": "^3.12.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

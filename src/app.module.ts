@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Logger, Module } from '@nestjs/common';
 import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import Configuration from './configuration';
@@ -11,6 +11,7 @@ import { Roles } from './roles/roles.entity';
 import { join } from 'path';
 import { LoggerModule } from 'nestjs-pino';
 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -51,54 +52,55 @@ import { LoggerModule } from 'nestjs-pino';
     // }),
     UserModule,
     // 日志插件  pino。   懒人适用。   线上使用winston更好
-    LoggerModule.forRoot({
-      pinoHttp: {
-        transport: {
-          targets: [
-            // pino-pretty 控制台输出日志美化格式
-            {
-              level: 'info',
-              target: 'pino-pretty',
-              options: {
-                colorize: true,
-              },
-            },
-            // pino-roll 按size大小，滚动输出日志到文件存储
-            {
-              level: 'info',
-              target: 'pino-roll',
-              options: {
-                file: join('log', 'log.txt'),
-                frequency: 'daily', // hourly
-                size: '1m',
-                mkdir: true,
-              },
-            },
-          ],
-        },
-      },
-      // process.env.NODE_ENV === 'development'
-      //   ? {
-      //       transport: {
-      //         target: 'pino-pretty',
-      //         options: {
-      //           colorize: true,
-      //         },
-      //       },
-      //     }
-      //   : {
-      //       transport: {
-      //         target: 'pino-roll',
-      //         options: {
-      //           file: 'log.txt',
-      //           frequency: 'daily',
-      //           mkdir: true,
-      //         },
-      //       },
-      //     },
-    }),
+    // LoggerModule.forRoot({
+    //   pinoHttp: {
+    //     transport: {
+    //       targets: [
+    //         // pino-pretty 控制台输出日志美化格式
+    //         {
+    //           level: 'info',
+    //           target: 'pino-pretty',
+    //           options: {
+    //             colorize: true,
+    //           },
+    //         },
+    //         // pino-roll 按size大小，滚动输出日志到文件存储
+    //         {
+    //           level: 'info',
+    //           target: 'pino-roll',
+    //           options: {
+    //             file: join('log', 'log.txt'),
+    //             frequency: 'daily', // hourly
+    //             size: '1m',
+    //             mkdir: true,
+    //           },
+    //         },
+    //       ],
+    //     },
+    //   },
+    //   // process.env.NODE_ENV === 'development'
+    //   //   ? {
+    //   //       transport: {
+    //   //         target: 'pino-pretty',
+    //   //         options: {
+    //   //           colorize: true,
+    //   //         },
+    //   //       },
+    //   //     }
+    //   //   : {
+    //   //       transport: {
+    //   //         target: 'pino-roll',
+    //   //         options: {
+    //   //           file: 'log.txt',
+    //   //           frequency: 'daily',
+    //   //           mkdir: true,
+    //   //         },
+    //   //       },
+    //   //     },
+    // }),
   ],
   controllers: [],
-  providers: [],
+  providers: [Logger],
+  exports: [Logger],
 })
 export class AppModule {}
