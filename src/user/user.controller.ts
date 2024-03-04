@@ -13,6 +13,7 @@ import {
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
 import { User } from './user.entity';
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 // import { Logger } from 'nestjs-pino';
 // import { ConfigEnum } from 'src/enum/config.enum';
 
@@ -22,7 +23,8 @@ export class UserController {
     private userService: UserService,
     private configService: ConfigService,
     // @Inject(Logger) private readonly logger: LoggerService,
-    private logger: Logger,
+    @Inject(WINSTON_MODULE_NEST_PROVIDER)
+    private readonly logger: LoggerService,
   ) {
     // 等价于 this.userService = new UserService();
     this.logger.log('user Controller init');
