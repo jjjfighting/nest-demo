@@ -5,6 +5,7 @@ import { createLogger } from 'winston';
 import * as winston from 'winston';
 import { WinstonModule, utilities } from 'nest-winston';
 import 'winston-daily-rotate-file';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
   // 使用winston日志插件
@@ -35,13 +36,17 @@ async function bootstrap() {
     ],
   });
 
+  const logger = WinstonModule.createLogger({
+    instance,
+  });
+
   const app = await NestFactory.create(AppModule, {
     // 重构了nest的logger
-    logger: WinstonModule.createLogger({
-      instance,
-    }),
+    logger,
   });
   app.setGlobalPrefix('api/v1');
+  // 全局过滤器
+  app.useGlobalFilters(new HttpExceptionFilter(logger));
   await app.listen(3000);
 
   if (module.hot) {

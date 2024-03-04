@@ -2,6 +2,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Inject,
   Logger,
   LoggerService,
@@ -28,6 +30,7 @@ export class UserController {
 
   @Get()
   getUsers(): any {
+    // throw new HttpException('拒绝访问', HttpStatus.FORBIDDEN);
     this.logger.log('getuser  请求成功');
     this.logger.warn('getuser  请求成功');
     this.logger.error('getuser  请求成功');
