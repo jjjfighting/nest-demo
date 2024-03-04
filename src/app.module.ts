@@ -8,6 +8,8 @@ import { User } from './user/user.entity';
 import { Logs } from './logs/logs.entity';
 import { Profile } from './user/profile.entity';
 import { Roles } from './roles/roles.entity';
+import { join } from 'path';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -48,6 +50,53 @@ import { Roles } from './roles/roles.entity';
     //   logging: ['error'],
     // }),
     UserModule,
+    // 日志插件  pino。   懒人适用。   线上使用winston更好
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          targets: [
+            // pino-pretty 控制台输出日志美化格式
+            {
+              level: 'info',
+              target: 'pino-pretty',
+              options: {
+                colorize: true,
+              },
+            },
+            // pino-roll 按size大小，滚动输出日志到文件存储
+            {
+              level: 'info',
+              target: 'pino-roll',
+              options: {
+                file: join('log', 'log.txt'),
+                frequency: 'daily', // hourly
+                size: '1m',
+                mkdir: true,
+              },
+            },
+          ],
+        },
+      },
+      // process.env.NODE_ENV === 'development'
+      //   ? {
+      //       transport: {
+      //         target: 'pino-pretty',
+      //         options: {
+      //           colorize: true,
+      //         },
+      //       },
+      //     }
+      //   : {
+      //       transport: {
+      //         target: 'pino-roll',
+      //         options: {
+      //           file: 'log.txt',
+      //           frequency: 'daily',
+      //           mkdir: true,
+      //         },
+      //       },
+      //     },
+    }),
   ],
   controllers: [],
   providers: [],
