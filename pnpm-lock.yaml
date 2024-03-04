@@ -31,6 +31,7 @@ specifiers:
   pino-roll: 1.0.0-rc.1
   prettier: ^2.3.2
   reflect-metadata: ^0.1.13
+  request-ip: ^3.3.0
   run-script-webpack-plugin: ^0.2.0
   rxjs: ^7.2.0
   source-map-support: ^0.5.20
@@ -60,6 +61,7 @@ dependencies:
   pino-pretty: 10.3.1
   pino-roll: 1.0.0-rc.1
   reflect-metadata: 0.1.14
+  request-ip: 3.3.0
   rxjs: 7.8.1
   typeorm: 0.3.20_tksbyegt2zb4maiqxrzj3252uu
   winston: 3.12.0
@@ -5621,6 +5623,10 @@ packages:
 
   /reflect-metadata/0.2.1:
     resolution: {integrity: sha512-i5lLI6iw9AU3Uu4szRNPPEkomnkjRTaVt9hy/bn5g/oSzekBSMeLZblcjP74AW0vBabqERLLIrz+gR8QYR54Tw==}
+    dev: false
+
+  /request-ip/3.3.0:
+    resolution: {integrity: sha512-cA6Xh6e0fDBBBwH77SLJaJPBmD3nWVAcF9/XAcsrIHdjhFzFiB5aNQFytdjCGPezU3ROwrR11IddKAM08vohxA==}
     dev: false
 
   /require-directory/2.1.1:

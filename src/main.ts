@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { createLogger } from 'winston';
@@ -6,6 +6,7 @@ import * as winston from 'winston';
 import { WinstonModule, utilities } from 'nest-winston';
 import 'winston-daily-rotate-file';
 import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { AllExceptionFilter } from './filters/all-exception.filter';
 
 async function bootstrap() {
   // 使用winston日志插件
@@ -45,8 +46,12 @@ async function bootstrap() {
     logger,
   });
   app.setGlobalPrefix('api/v1');
-  // 全局过滤器
+  // 全局http过滤器
   app.useGlobalFilters(new HttpExceptionFilter(logger));
+
+  const httpAdapter = app.get(HttpAdapterHost);
+  // 全局过滤器
+  app.useGlobalFilters(new AllExceptionFilter(logger, httpAdapter));
   await app.listen(3000);
 
   if (module.hot) {
