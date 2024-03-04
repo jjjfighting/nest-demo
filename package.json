@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "generator-model": "typeorm-model-generator -h 127.0.0.1 -p 3306 -d testdb -u root -x example -e mysql -o ./src/entities"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -56,6 +57,7 @@
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.2.0",
+    "typeorm-model-generator": "^0.4.6",
     "typescript": "^5.0.0",
     "webpack": "^5.89.0",
     "webpack-node-externals": "^3.0.0"

@@ -28,8 +28,8 @@ import { Roles } from './roles/roles.entity';
           password: configService.get(ConfigEnum.DB_PASSSWORD),
           database: configService.get(ConfigEnum.DB_DATABASE),
           entities: [User, Profile, Logs, Roles],
+          logging: false,
           // 同步本地的schema与数据库   -》 初始化的时候去使用
-          logging: ['error'],
           synchronize: true, // 直接根据entity生成对应表。建议开发时使用，生产时关闭
           // autoLoadEntities: true,
         } as TypeOrmModuleOptions),
