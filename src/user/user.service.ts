@@ -10,8 +10,34 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Logs) private readonly logsRepository: Repository<Logs>,
   ) {}
-  findAll() {
-    return this.userRepository.find();
+  findAll(query: any) {
+    const { limit = 10, page, username, gender, role } = query;
+    // 联合查询
+    // SELECT * FROM user u LEFT JOIN profile p ON u.id = p.uid LEFT JOIN role r ON u.id = r.uid WHERE...
+    return this.userRepository.find({
+      // left join  或者inner join ， 总之：联查
+      relations: ['roles', 'profile'],
+      // 返回结构体勾选
+      select: {
+        id: true,
+        username: true,
+        profile: {
+          gender: true,
+        },
+      },
+      // 条件
+      where: {
+        username,
+        profile: {
+          gender,
+        },
+        roles: {
+          id: role,
+        },
+      },
+      take: limit,
+      skip: (page - 1) * limit,
+    });
   }
   find(username: string) {
     return this.userRepository.findOne({ where: { username } });

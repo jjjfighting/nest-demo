@@ -19,6 +19,51 @@
             "date": 1709561258095,
             "name": "logs\\application-2024-03-04-22.log",
             "hash": "0083dd505b20f0dd2eba3ae5c496b5ce727c63ad2602f03e4f3fd835b9644418"
+        },
+        {
+            "date": 1709606522644,
+            "name": "logs\\application-2024-03-05-10.log",
+            "hash": "1d31513cbfab762b1ce9456b474d75e97af15e6e0373eebd08e7d36963ab764b"
+        },
+        {
+            "date": 1709621898130,
+            "name": "logs\\application-2024-03-05-14.log",
+            "hash": "10172fa550b8112c1e06ff72921506604eba22b060cdfc34ccdc99a77a2efcb0"
+        },
+        {
+            "date": 1709622282863,
+            "name": "logs\\application-2024-03-05-15.log",
+            "hash": "8cf0e7d80f7be7623d912c17c02cde1fc3b07557d3d427d1f0e30d6627d68cd5"
+        },
+        {
+            "date": 1709628817477,
+            "name": "logs\\application-2024-03-05-16.log",
+            "hash": "bc0660cac8982b000fda0a5ff0c47cc47dddc4c45c5b59debb162e870a3fe955"
+        },
+        {
+            "date": 1709707609561,
+            "name": "logs\\application-2024-03-06-14.log",
+            "hash": "4ebd9b2844ed4424d6183fbcde53c4f8ccb42a830be21f0f56acd64c671a7f73"
+        },
+        {
+            "date": 1709710127041,
+            "name": "logs\\application-2024-03-06-15.log",
+            "hash": "ac8c7ed726487c67ea4aaaf31aa22a8e077640f90b4eaf1c817ec3acb68f7ef8"
+        },
+        {
+            "date": 1709712062540,
+            "name": "logs\\application-2024-03-06-16.log",
+            "hash": "c58d0ecc78aaa074c7824d9bacfca1040957211ab7d090f6372dc9231857da81"
+        },
+        {
+            "date": 1709715666638,
+            "name": "logs\\application-2024-03-06-17.log",
+            "hash": "7613d58a152392ba3d28288f0951290cbc3daf9ff93b6c065f4926879a42f877"
+        },
+        {
+            "date": 1709719847022,
+            "name": "logs\\application-2024-03-06-18.log",
+            "hash": "16b42ce70a02a73058c13e51eb8d7b733ebb72394eb151b2636b6176ba00916c"
         }
     ],
     "hashType": "sha256"

@@ -11,7 +11,7 @@ import { Roles } from './roles/roles.entity';
 import { join } from 'path';
 import { LoggerModule } from 'nestjs-pino';
 import { LogsModule } from './logs/logs.module';
-import ormconfig from '../ormconfig';
+import { connectionParams } from '../ormconfig';
 import * as dotenv from 'dotenv';
 
 const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
@@ -26,7 +26,7 @@ const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
       // ignoreEnvFile: false, // 读取配置。 false时读取env    true时读取load内容， 既是config.yml内容
       load: [() => dotenv.config({ path: 'env' })],
     }),
-    TypeOrmModule.forRoot(ormconfig),
+    TypeOrmModule.forRoot(connectionParams),
 
     UserModule,
     LogsModule,

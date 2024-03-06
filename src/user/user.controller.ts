@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -7,8 +8,11 @@ import {
   Inject,
   Logger,
   LoggerService,
+  Param,
   Patch,
   Post,
+  Query,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
@@ -31,36 +35,53 @@ export class UserController {
   }
 
   @Get()
-  getUsers(): any {
+  getUsers(@Query() query: any): any {
+    console.log('query: ', query);
+    // page 页码 limit 每页条数 condition-查询条件（username、role、gender等
     // throw new HttpException('拒绝访问', HttpStatus.FORBIDDEN);
     this.logger.log('getuser  请求成功');
     this.logger.warn('getuser  请求成功');
     this.logger.error('getuser  请求成功');
 
-    return this.userService.findAll();
+    return this.userService.findAll(query);
   }
 
   @Post()
-  addUser(): any {
+  addUser(@Body() dto: any): any {
+    console.log('dto: ', dto);
     console.log(123);
-    const user = { username: 'jjj', password: '123456' } as User;
+    const user = dto as User;
     return this.userService.create(user);
   }
 
-  @Patch()
-  updateUser(): any {
-    const user = { username: 'sdf' } as User;
-    return this.userService.update(1, user);
-  }
-
-  @Delete()
-  deleteUser(): any {
-    return this.userService.remove(1);
-  }
-
   @Get('/profile')
-  getUserProfile(): any {
+  getUserProfile(@Query() query: any): any {
+    console.log('query: ', query);
     return this.userService.findProfile(2);
+  }
+
+  @Get('/:id')
+  getUser(@Param('id') id: number): any {
+    // console.log('dto: ', dto);
+    // throw new HttpException('拒绝访问', HttpStatus.FORBIDDEN);
+    this.logger.log('getuser  请求成功');
+    this.logger.warn('getuser  请求成功');
+    this.logger.error('getuser  请求成功');
+
+    return this.userService.findOne(id);
+  }
+
+  @Patch('/:id')
+  updateUser(@Body() dto: any, @Param('id') id: number): any {
+    console.log('dto: ', dto);
+    console.log('id: ', id);
+    // const user = { username: 'sdf' } as User;
+    return this.userService.update(id, dto);
+  }
+
+  @Delete('/:id')
+  deleteUser(@Param('id') id: number): any {
+    return this.userService.remove(id);
   }
 
   @Get('/logs')
