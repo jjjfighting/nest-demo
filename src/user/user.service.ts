@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
@@ -14,30 +14,45 @@ export class UserService {
     const { limit = 10, page, username, gender, role } = query;
     // 联合查询
     // SELECT * FROM user u LEFT JOIN profile p ON u.id = p.uid LEFT JOIN role r ON u.id = r.uid WHERE...
-    return this.userRepository.find({
-      // left join  或者inner join ， 总之：联查
-      relations: ['roles', 'profile'],
-      // 返回结构体勾选
-      select: {
-        id: true,
-        username: true,
-        profile: {
-          gender: true,
-        },
-      },
-      // 条件
-      where: {
-        username,
-        profile: {
-          gender,
-        },
-        roles: {
-          id: role,
-        },
-      },
-      take: limit,
-      skip: (page - 1) * limit,
-    });
+
+    return (
+      this.userRepository
+        .createQueryBuilder('user')
+        // inner join  vs  left join  vs  outer join
+        .leftJoinAndSelect('user.profile', 'profile')
+        .leftJoinAndSelect('user.roles', 'roles')
+        .where(username ? 'user.username = :username' : '1=1', { username })
+        .andWhere(gender ? 'profile.gender = :gender' : '1=1', { gender })
+        .andWhere(role ? 'roles.id = :id' : '1=1', { id: role })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .getMany()
+    );
+
+    // return this.userRepository.find({
+    //   // left join  或者inner join ， 总之：联查
+    //   relations: ['roles', 'profile'],
+    //   // 返回结构体勾选
+    //   select: {
+    //     id: true,
+    //     username: true,
+    //     profile: {
+    //       gender: true,
+    //     },
+    //   },
+    //   // 条件
+    //   where: {
+    //     username,
+    //     profile: {
+    //       gender,
+    //     },
+    //     roles: {
+    //       id: role,
+    //     },
+    //   },
+    //   take: limit,
+    //   skip: (page - 1) * limit,
+    // });
   }
   find(username: string) {
     return this.userRepository.findOne({ where: { username } });
@@ -47,7 +62,14 @@ export class UserService {
   }
   async create(user: User) {
     const userTmp = await this.userRepository.create(user);
-    return this.userRepository.save(userTmp);
+    try {
+      const res = this.userRepository.save(userTmp);
+      return res;
+    } catch (error) {
+      console.log(222);
+      console.log('e-----: ', error);
+      throw new HttpException(error, 500);
+    }
   }
   async update(id: number, user: Partial<User>) {
     return this.userRepository.update(id, user);

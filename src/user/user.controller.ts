@@ -13,15 +13,18 @@ import {
   Post,
   Query,
   Req,
+  UseFilters,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
 import { User } from './user.entity';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { TypeormFilter } from 'src/filters/typeorm.filter';
 // import { Logger } from 'nestjs-pino';
 // import { ConfigEnum } from 'src/enum/config.enum';
 
 @Controller('user')
+@UseFilters(new TypeormFilter())
 export class UserController {
   constructor(
     private userService: UserService,

@@ -3,11 +3,13 @@ import {
   Catch,
   ExceptionFilter,
   HttpException,
+  HttpStatus,
   Logger,
   LoggerService,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 import * as requestIp from 'request-ip';
+import { QueryFailedError, TypeORMError } from 'typeorm';
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
@@ -21,8 +23,20 @@ export class AllExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
     // console.log('request: ', request);
-    const status = exception.getStatus();
+    console.log('exception: ', exception);
+    // const status = exception.getStatus();
     // console.log('exception: ', exception);
+
+    const httpStatus =
+      exception instanceof HttpException
+        ? exception.getStatus()
+        : HttpStatus.INTERNAL_SERVER_ERROR;
+
+    let msg: string = exception['response'] || 'error';
+    // 数据库方面报错
+    if (exception instanceof QueryFailedError) {
+      msg = exception.message;
+    }
 
     const respBody = {
       headers: request.headers,
@@ -34,11 +48,13 @@ export class AllExceptionFilter implements ExceptionFilter {
       // @ts-ignore
       params: request.params,
       timestamp: new Date().toISOString(),
-      error: exception['response'] || 'error',
+      exception: exception['name'],
+      error: msg,
+      ip: requestIp.getClientIp(request),
     };
 
     this.logger.error(respBody);
 
-    httpAdapter.reply(response, respBody);
+    httpAdapter.reply(response, respBody, httpStatus);
   }
 }

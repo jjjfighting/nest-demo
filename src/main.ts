@@ -21,6 +21,10 @@ async function bootstrap() {
 
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
 
+  const httpAdapter = app.get(HttpAdapterHost);
+  const logger = new Logger();
+  app.useGlobalFilters(new AllExceptionFilter(logger, httpAdapter));
+
   await app.listen(3000);
 
   if (module.hot) {
