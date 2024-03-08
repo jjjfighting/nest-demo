@@ -1,17 +1,20 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { Logs } from 'src/logs/logs.entity';
+import { Roles } from 'src/roles/roles.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Logs) private readonly logsRepository: Repository<Logs>,
+    @InjectRepository(Roles)
+    private readonly rolesRepository: Repository<Roles>,
   ) {}
   findAll(query: any) {
-    const { limit = 10, page, username, gender, role } = query;
+    const { limit = 10, page = 1, username, gender, role } = query;
     // 联合查询
     // SELECT * FROM user u LEFT JOIN profile p ON u.id = p.uid LEFT JOIN role r ON u.id = r.uid WHERE...
 
@@ -61,6 +64,13 @@ export class UserService {
     return this.userRepository.findOne({ where: { id } });
   }
   async create(user: User) {
+    if (user.roles?.length) {
+      user.roles = await this.rolesRepository.find({
+        where: {
+          id: In(user.roles),
+        },
+      });
+    }
     const userTmp = await this.userRepository.create(user);
     try {
       const res = this.userRepository.save(userTmp);
@@ -72,10 +82,21 @@ export class UserService {
     }
   }
   async update(id: number, user: Partial<User>) {
-    return this.userRepository.update(id, user);
+    const userTemp = await this.findProfile(id); // user 左联了 profile
+    const newUser = this.userRepository.merge(userTemp, user);
+    // 联合模型更新，需要使用save
+    return this.userRepository.save(newUser);
+
+    // 单模型更新
+    // return this.userRepository.update(id, user);
   }
-  remove(id: number) {
-    return this.userRepository.delete(id);
+  async remove(id: number) {
+    // 不会触发 @AfterRemove 钩子
+    // this.userRepository.delete(id);
+
+    // 会触发钩子
+    const user = await this.findOne(id);
+    return this.userRepository.remove(user);
   }
   findProfile(id: number) {
     return this.userRepository.findOne({

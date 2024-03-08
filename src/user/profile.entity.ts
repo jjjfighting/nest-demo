@@ -21,7 +21,7 @@ export class Profile {
   @Column()
   address: string;
 
-  @OneToOne(() => User)
+  @OneToOne(() => User, { onDelete: 'CASCADE' })
   //   @JoinColumn() // 默认会设置为user+User的主键，并且是小驼峰： userId
   @JoinColumn({ name: 'user_id' })
   user: User;

@@ -94,6 +94,26 @@
             "date": 1709793950657,
             "name": "logs\\application-2024-03-07-14.log",
             "hash": "7e80a489a6044f4faef65e6262db53c00b072d019bb0a45c314d1a6236169235"
+        },
+        {
+            "date": 1709794817131,
+            "name": "logs\\application-2024-03-07-15.log",
+            "hash": "49749bbbf22e1cfbaedc9947142a489303f59a1c8f7f0945aacdb0250e30baf7"
+        },
+        {
+            "date": 1709802972304,
+            "name": "logs\\application-2024-03-07-17.log",
+            "hash": "6951403710d9755b62b7f8efa99a6b62310523760543276312d668447c7ca280"
+        },
+        {
+            "date": 1709869199373,
+            "name": "logs\\application-2024-03-08-11.log",
+            "hash": "b7d2946db42aba3f9b77a37db5c94e62cedd4a65ea389e1b28f68e602bae2a53"
+        },
+        {
+            "date": 1709879973882,
+            "name": "logs\\application-2024-03-08-14.log",
+            "hash": "c20113988a7a0ea5725c35e7565cbec19db1aafd9e0c791809d6b84163df3361"
         }
     ],
     "hashType": "sha256"

@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  Header,
+  Headers,
   HttpException,
   HttpStatus,
   Inject,
@@ -75,7 +77,12 @@ export class UserController {
   }
 
   @Patch('/:id')
-  updateUser(@Body() dto: any, @Param('id') id: number): any {
+  updateUser(
+    @Body() dto: any,
+    @Param('id') id: number,
+    @Headers('Authorization') headers: any,
+  ): any {
+    console.log('headers: ', headers);
     console.log('dto: ', dto);
     console.log('id: ', id);
     // const user = { username: 'sdf' } as User;
