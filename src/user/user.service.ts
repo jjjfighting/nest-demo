@@ -8,8 +8,8 @@ import { Roles } from 'src/roles/roles.entity';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Logs) private readonly logsRepository: Repository<Logs>,
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
     @InjectRepository(Roles)
     private readonly rolesRepository: Repository<Roles>,
   ) {}

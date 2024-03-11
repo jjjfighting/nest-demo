@@ -11,17 +11,22 @@ import {
   Logger,
   LoggerService,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
   Req,
   UseFilters,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ConfigService } from '@nestjs/config';
 import { User } from './user.entity';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { TypeormFilter } from 'src/filters/typeorm.filter';
+import { CreateUserPipe } from './pipe/create-user/pipe';
+import { CreateUserDto } from './dto/create-user.dto';
+import { AuthGuard } from '@nestjs/passport';
 // import { Logger } from 'nestjs-pino';
 // import { ConfigEnum } from 'src/enum/config.enum';
 
@@ -52,17 +57,20 @@ export class UserController {
   }
 
   @Post()
-  addUser(@Body() dto: any): any {
+  // CreateUserPipe 管道：负责转换
+  // CreateUserDto  类验证器： 负责验证，校验
+  addUser(@Body(CreateUserPipe) dto: CreateUserDto): any {
     console.log('dto: ', dto);
     console.log(123);
-    const user = dto as User;
-    return this.userService.create(user);
+    const user = dto;
+    return this.userService.create(user as any);
   }
 
   @Get('/profile')
-  getUserProfile(@Query() query: any): any {
-    console.log('query: ', query);
-    return this.userService.findProfile(2);
+  @UseGuards(AuthGuard('jwt')) // 跑这个接口，需要验证jwt逻辑.  跳转jwt.strategy.ts文件
+  getUserProfile(@Query('id', ParseIntPipe) id: any): any {
+    // console.log('query: ', query);
+    return this.userService.findProfile(id);
   }
 
   @Get('/:id')

@@ -13,6 +13,7 @@ import { LoggerModule } from 'nestjs-pino';
 import { LogsModule } from './logs/logs.module';
 import { connectionParams } from '../ormconfig';
 import * as dotenv from 'dotenv';
+import { AuthModule } from './auth/auth.module';
 
 const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
 
@@ -28,6 +29,7 @@ const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
     }),
     TypeOrmModule.forRoot(connectionParams),
 
+    AuthModule,
     UserModule,
     LogsModule,
     // 日志插件  pino。   懒人适用。   线上使用winston更好
