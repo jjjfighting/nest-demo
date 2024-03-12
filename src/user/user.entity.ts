@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 import { Profile } from './profile.entity';
 import { Roles } from 'src/roles/roles.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -22,6 +23,7 @@ export class User {
   username: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   // typescript -> 数据库  关系关联  Mapping。   并没有注入外键

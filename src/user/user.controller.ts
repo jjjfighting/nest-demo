@@ -27,10 +27,12 @@ import { TypeormFilter } from 'src/filters/typeorm.filter';
 import { CreateUserPipe } from './pipe/create-user/pipe';
 import { CreateUserDto } from './dto/create-user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from 'src/guards/admin.guard';
 // import { Logger } from 'nestjs-pino';
 // import { ConfigEnum } from 'src/enum/config.enum';
 
 @Controller('user')
+@UseGuards(AuthGuard('jwt'), AdminGuard)
 @UseFilters(new TypeormFilter())
 export class UserController {
   constructor(
@@ -45,6 +47,9 @@ export class UserController {
   }
 
   @Get()
+  // 装饰器执行顺序： 从下往上执行！！！
+  // @UseGuards(AdminGuard) // 使用自定义守卫
+  // @UseGuards(AuthGuard('jwt'))
   getUsers(@Query() query: any): any {
     console.log('query: ', query);
     // page 页码 limit 每页条数 condition-查询条件（username、role、gender等

@@ -18,5 +18,11 @@ export class AuthService {
     throw new UnauthorizedException();
   }
 
-  singup(username: string, password: string) {}
+  async singup(username: string, password: string) {
+    const res = await this.userService.create({
+      username,
+      password,
+    } as any);
+    return res;
+  }
 }
